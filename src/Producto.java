@@ -2,7 +2,7 @@ public class Producto {
     // Personaje de Fantasia RPG
 
     // --- Atributos ---
-    private int id;
+    private final int id;
     private String nombre;
     private String imagen;
     Producto siguiente;

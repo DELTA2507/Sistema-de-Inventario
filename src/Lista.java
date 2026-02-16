@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Lista {
     // --- Atributos ---
     private Producto first;
