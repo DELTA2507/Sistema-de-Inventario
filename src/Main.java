@@ -5,8 +5,8 @@ public class Main {
 
     static void main(String[] args) {
         Lista listaProductos = new Lista();
-        int opcionMenu = 0;
         boolean salir = false;
+        int opcionMenu;
 
         while (!salir) {
             opcionMenu = menu(listaProductos);
