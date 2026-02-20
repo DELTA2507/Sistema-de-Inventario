@@ -21,13 +21,13 @@ public class Lista {
 
     // Operaciones
     public void insertarNodoInicio (Producto nuevoProducto) {
-        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getImagen());
+        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getCategoria(), nuevoProducto.getImagen());
         nuevoNodo.setSiguiente(first);
         setFirst(nuevoNodo);
     }
 
     public void insertarNodoFinal (Producto nuevoProducto) {
-        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getImagen());
+        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getCategoria(), nuevoProducto.getImagen());
         if (isNull()) {
             setFirst(nuevoNodo);
             return;
@@ -82,7 +82,10 @@ public class Lista {
             anterior.setSiguiente(actual.getSiguiente());
         }
 
-        System.out.println("Producto eliminado correctamente");
+        System.out.println("\n --------------------------");
+        System.out.println("PRODUCTO ELIMINADO CON ÉXITO");
+        System.out.println("-----------------------------");
+
         return actual;
     }
 
@@ -109,6 +112,15 @@ public class Lista {
         return true;
     }
 
+    public boolean actualizarCategoria(int id, String nuevaCategoria) {
+        Producto actual = buscarNodo(id);
+        if (actual == null) {
+            return false;
+        }
+        actual.setCategoria(nuevaCategoria);
+        return true;
+    }
+
     public boolean actualizarImagen(int id, String nuevaImagen) {
         Producto actual = buscarNodo(id);
         if (actual == null) {
@@ -117,6 +129,8 @@ public class Lista {
         actual.setImagen(nuevaImagen);
         return true;
     }
+
+
 
     private boolean isNull() {
         return first == null;

@@ -27,10 +27,12 @@ public class Main {
 
                 case 3: {
                     int opcion = 0;
-                    System.out.print("Donde desea introducir el nuevo producto?");
-                    System.out.print("1. Al inicio de la lista");
-                    System.out.print("2. Al final de la lista");
+                    System.out.println("Donde desea introducir el nuevo producto:");
+                    System.out.println("1. Al inicio de la lista");
+                    System.out.println("2. Al final de la lista");
                     opcion = scanner.nextInt();
+
+                    scanner.nextLine();
 
                     Producto nuevo = crearProducto();
 
@@ -59,7 +61,10 @@ public class Main {
                     System.out.println(existente);
 
                     System.out.println("1. Nombre");
-                    System.out.println("2. Imagen");
+                    System.out.println("2. Categoria");
+                    System.out.println("3. Imagen");
+
+                    System.out.print("Introduzca una opcion:");
 
                     int opcion = scanner.nextInt();
                     scanner.nextLine();
@@ -73,6 +78,12 @@ public class Main {
                             break;
 
                         case 2:
+                            System.out.print("Nueva categoria: ");
+                            String nuevaCategoria = scanner.nextLine();
+                            listaProductos.actualizarCategoria(id, nuevaCategoria);
+                            break;
+
+                        case 3:
                             System.out.print("Nueva imagen: ");
                             String nuevaImagen = scanner.nextLine();
                             listaProductos.actualizarImagen(id, nuevaImagen);
@@ -100,13 +111,21 @@ public class Main {
                     System.out.println("Producto encontrado:");
                     System.out.println(existente);
 
-                    System.out.println("Seguro que desea eliminar el producto? (Y/N)");
+                    System.out.println("Seguro que desea eliminar el producto, esta opción no se puede deshacer (Y/N)");
                     String opcion = scanner.nextLine().trim().toUpperCase();
+
+                    if (!opcion.equals("Y") && !opcion.equals("N")) {
+                        System.out.println("Opción inválida");
+                        break;
+                    }
 
                     if (opcion.equals("Y")) {
                         listaProductos.eliminarProducto(id);
                     } else if (opcion.equals("N")) {
-                        return;
+                        System.out.println("--------------------------");
+                        System.out.println("X Eliminación Cancelada, no se eliminó ningún producto");
+                        System.out.println("--------------------------");
+                        break;
                     }
 
                     break;
@@ -114,6 +133,11 @@ public class Main {
 
                 case 6: {
                     salir = true;
+
+                    System.out.println("--------------------------");
+                    System.out.println("Saliendo del programa...");
+                    System.out.println("--------------------------");
+
                     break;
                 }
             }
@@ -123,14 +147,16 @@ public class Main {
     private static int menu(Lista listaProductos) {
         int opcionMenu = 0;
 
-        System.out.print("--- Sistema de Inventario ---");
+        System.out.println(" \n --- Sistema de Inventario ---");
         System.out.println("Seleccione una opción (Introduzca el número correspondiente a la opción deseada):");
         System.out.println("1. Mostrar Lista de Productos");
         System.out.println("2. Buscar Producto");
         System.out.println("3. Insertar Producto");
         System.out.println("4. Editar Producto");
         System.out.println("5. Eliminar Producto");
-        System.out.println("6. Salir");
+        System.out.println("6. Salir \n");
+
+        System.out.print("Introduzca una opcion: ");
 
         opcionMenu = scanner.nextInt();
 
@@ -143,9 +169,16 @@ public class Main {
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
 
+        System.out.print("Categoria: ");
+        String categoria = scanner.nextLine();
+
         System.out.print("Imagen: ");
         String imagen = scanner.nextLine();
 
-        return new Producto(nombre, imagen);
+        System.out.println("\n ------------------------");
+        System.out.println("PRODUCTO CREADO CON ÉXITO");
+        System.out.println("------------------------");
+
+        return new Producto(nombre, categoria, imagen);
     }
 }
