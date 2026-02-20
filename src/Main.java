@@ -62,7 +62,8 @@ public class Main {
 
                     System.out.println("1. Nombre");
                     System.out.println("2. Categoria");
-                    System.out.println("3. Imagen");
+                    System.out.println("3. Cantidad");
+                    System.out.println("4. Imagen");
 
                     System.out.print("Introduzca una opcion:");
 
@@ -84,6 +85,13 @@ public class Main {
                             break;
 
                         case 3:
+                            System.out.print("Nueva cantidad: ");
+                            int nuevaCantidad = scanner.nextInt();
+                            scanner.nextLine();
+                            listaProductos.actualizarCantidad(id, nuevaCantidad);
+                            break;
+
+                        case 4:
                             System.out.print("Nueva imagen: ");
                             String nuevaImagen = scanner.nextLine();
                             listaProductos.actualizarImagen(id, nuevaImagen);
@@ -172,6 +180,11 @@ public class Main {
         System.out.print("Categoria: ");
         String categoria = scanner.nextLine();
 
+        System.out.print("Cantidad: ");
+        int cantidad = scanner.nextInt();
+
+        scanner.nextLine();
+
         System.out.print("Imagen: ");
         String imagen = scanner.nextLine();
 
@@ -179,6 +192,6 @@ public class Main {
         System.out.println("PRODUCTO CREADO CON ÉXITO");
         System.out.println("------------------------");
 
-        return new Producto(nombre, categoria, imagen);
+        return new Producto(nombre, categoria, cantidad, imagen);
     }
 }

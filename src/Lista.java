@@ -21,13 +21,13 @@ public class Lista {
 
     // Operaciones
     public void insertarNodoInicio (Producto nuevoProducto) {
-        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getCategoria(), nuevoProducto.getImagen());
+        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getCategoria(), nuevoProducto.getCantidad(), nuevoProducto.getImagen());
         nuevoNodo.setSiguiente(first);
         setFirst(nuevoNodo);
     }
 
     public void insertarNodoFinal (Producto nuevoProducto) {
-        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getCategoria(), nuevoProducto.getImagen());
+        Producto nuevoNodo = new Producto(nuevoProducto.getNombre(), nuevoProducto.getCategoria(), nuevoProducto.getCantidad(), nuevoProducto.getImagen());
         if (isNull()) {
             setFirst(nuevoNodo);
             return;
@@ -121,6 +121,15 @@ public class Lista {
         return true;
     }
 
+    public boolean actualizarCantidad(int id, int nuevaCantidad) {
+        Producto actual = buscarNodo(id);
+        if (actual == null) {
+            return false;
+        }
+        actual.setCantidad(nuevaCantidad);
+        return true;
+    }
+
     public boolean actualizarImagen(int id, String nuevaImagen) {
         Producto actual = buscarNodo(id);
         if (actual == null) {
@@ -129,8 +138,6 @@ public class Lista {
         actual.setImagen(nuevaImagen);
         return true;
     }
-
-
 
     private boolean isNull() {
         return first == null;
