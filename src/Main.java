@@ -59,23 +59,23 @@ public class Main {
         switch (opcionInicial) {
 
             case 1:
-                IngresarProducto(listaProductos);
+                ingresarProducto(listaProductos);
                 break;
 
             case 2:
-                BuscarProducto(listaProductos);
+                buscarProducto(listaProductos);
                 break;
 
             case 3:
-                ModificarProducto(listaProductos);
+                modificarProducto(listaProductos);
                 break;
 
             case 4:
-                MostrarLista(listaProductos);
+                mostrarLista(listaProductos);
                 break;
 
             case 5:
-                EliminarProducto(listaProductos);
+                eliminarProducto(listaProductos);
                 break;
 
             case 0:
@@ -89,7 +89,7 @@ public class Main {
 
     //Metodos sobre las funcionalidades solicitadas
 
-    public static void IngresarProducto(ListaProducto listaProductos) throws IOException {
+    public static void ingresarProducto(ListaProducto listaProductos) throws IOException {
 
         try {
             //String nombre, double costoUnitario, double precio, String categoria, LocalDate fechaVencimiento, int cantidad, ArrayList<String> listaImagenes
@@ -146,7 +146,7 @@ public class Main {
         }
     }
 
-    public static void BuscarProducto(ListaProducto listaProductos) throws IOException {
+    public static void buscarProducto(ListaProducto listaProductos) throws IOException {
 
         try {
 
@@ -165,7 +165,7 @@ public class Main {
         }
     }
 
-    public static void ModificarProducto(ListaProducto listaProductos) throws IOException {
+    public static void modificarProducto(ListaProducto listaProductos) throws IOException {
 
         try {
 
@@ -253,7 +253,7 @@ public class Main {
         }
     }
 
-    public static void EliminarProducto(ListaProducto listaProductos) throws IOException {
+    public static void eliminarProducto(ListaProducto listaProductos) throws IOException {
 
         try {
             //String nombre, double costoUnitario, double precio, String categoria, LocalDate fechaVencimiento, int cantidad, ArrayList<String> listaImagenes
@@ -295,7 +295,7 @@ public class Main {
         }
     }
 
-    public static void MostrarLista(ListaProducto listaProductos) throws IOException {
+    public static void mostrarLista(ListaProducto listaProductos) throws IOException {
 
         try {
             listaProductos.mostrarLista();
