@@ -1,87 +1,78 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 public class ListaProducto {
-    // Atributos
-    private Producto first;
 
-    // Métodos
+    //Atributos
+    private NodoLista first;
 
-    // Constructor
+    //Constructor
     public ListaProducto() {
         this.first = null;
     }
 
-    // Getters
-    public Producto getFirst() {
+    //Getter y setter
+    public NodoLista getFirst() {
         return first;
     }
 
-    // Setters
-    private void setFirst(Producto first) {
+    private void setFirst(NodoLista first) {
         this.first = first;
     }
 
-    // Operaciones
-    public void insertarNodoInicio(String nombre, double costoUnitario, double precio, String categoria, LocalDate fechaVencimiento, int cantidad, ArrayList<String> listaImagenes) {
-
-        Producto nuevoNodo = new Producto(nombre, costoUnitario, precio, categoria, fechaVencimiento, cantidad, listaImagenes);
-        nuevoNodo.setSiguiente(first);
-        System.out.println("Producto ingresado con éxito. Id asignado:" + nuevoNodo.getId());
-        setFirst(nuevoNodo);
-    }
+    //Operaciones
 
     private boolean isNull() {
         return first == null;
     }
 
-    public void insertarNodoFinal(String nombre, double costoUnitario, double precio, String categoria, LocalDate fechaVencimiento, int cantidad, ArrayList<String> listaImagenes) {
+    public void insertarNodoFinalCarrito(Producto producto, int cantidadComprar, boolean mostrarMensaje) {
 
-        Producto nuevoNodo = new Producto(nombre, costoUnitario, precio, categoria, fechaVencimiento, cantidad, listaImagenes);
+        NodoLista nuevoNodo = new NodoLista(producto, cantidadComprar);
         if (isNull()) {
             setFirst(nuevoNodo);
         } else {
-            Producto temp = first;
+            NodoLista temp = first;
             while (temp.getSiguiente() != null) {
                 temp = temp.getSiguiente();
             }
             temp.setSiguiente(nuevoNodo);
         }
-        System.out.println("Producto ingresado con éxito. ID asignado:" + nuevoNodo.getId());
+
+        if (mostrarMensaje) {
+            System.out.println("Producto agregado al carrito:");
+            System.out.println(nuevoNodo.getProducto());
+        }
     }
 
-    public Producto buscarNodo(int id) {
 
+    public NodoLista buscarNodo(int id) {
         if (isNull()) {
-            System.out.println("La lista está vacía.\n");
+            System.out.println("El carrito está vacío.");
             return null;
         }
-        Producto temp = first;
-        while (temp != null && temp.getId() != id) {
+        NodoLista temp = first;
+        while (temp != null && temp.getProducto().getId() != id) {
             temp = temp.getSiguiente();
         }
         if (temp == null) {
-            System.out.println("El producto buscado no se encontró en la lista.\n");
+            System.out.println("El producto buscado no se encontró en el carrito.");
         } else {
-            System.out.println("El producto buscado se encontró en la lista.\n");
+            System.out.println("El producto buscado se encontró en el carrito.");
         }
         return temp;
     }
 
-    public Producto eliminarProducto(int idEliminar) {
-
+    public NodoLista eliminarProducto(int idEliminar) {
         if (isNull()) {
-            System.out.println("La lista esta vacia.\n");
+            System.out.println("El carrito está vacío.");
             return null;
         }
-        Producto temp = first;
-        Producto anteriorTemp = null;
-        while (temp != null && temp.getId() != idEliminar) {
+        NodoLista temp = first;
+        NodoLista anteriorTemp = null;
+        while (temp != null && temp.getProducto().getId() != idEliminar) {
             anteriorTemp = temp;
             temp = temp.getSiguiente();
         }
         if (temp == null) {
-            System.out.println("El código no se encontró en la lista.\n");
+            System.out.println("El producto no se encontró en el carrito.");
             return null;
         }
         if (anteriorTemp == null) {
@@ -89,71 +80,86 @@ public class ListaProducto {
         } else {
             anteriorTemp.setSiguiente(temp.getSiguiente());
         }
-        System.out.println("Producto eliminado con exito.\n");
+        System.out.println("Producto eliminado del carrito.");
         return temp;
     }
 
-    public Producto mostrarLista() {
-
+    public void mostrarLista() {
         if (isNull()) {
-            System.out.println("La lista está vacía. \n");
-            return null;
+            System.out.println("El carrito está vacío.");
+            return;
         }
-        Producto temp = first;
+        NodoLista temp = first;
         while (temp != null) {
             System.out.println(temp.toString());
             temp = temp.getSiguiente();
         }
-        System.out.println("Se imprimieron todos los productos.\n");
-        return temp;
+        System.out.println("Se mostraron todos los productos del carrito.");
     }
 
-    public void actualizarNombre(Producto productoActualizar, String nombreActualizar) {
-        productoActualizar.setNombre(nombreActualizar);
-        System.out.println("El nombre del producto fue actualizado con exito.\n");
+    public void actualizarCantidadCarrito(int idProducto, int nuevaCantidad) {
+        if (isNull()) {
+            System.out.println("El carrito está vacío.");
+            return;
+        }
+
+        NodoLista temp = first;
+
+        while (temp != null && temp.getProducto().getId() != idProducto) {
+            temp = temp.getSiguiente();
+        }
+
+        if (temp == null) {
+            System.out.println("El producto no se encontró en el carrito.");
+            return;
+        }
+
+        if (nuevaCantidad <= 0) {
+            eliminarProducto(idProducto);
+            return;
+        }
+
+        temp.setCantidadComprar(nuevaCantidad);
+
+        System.out.println("Cantidad actualizada correctamente.");
     }
 
-    public void actualizarCostoUnitario(Producto productoActualizar, double costoActualizar) {
-        productoActualizar.setCostoUnitario(costoActualizar);
-        System.out.println("El costo del producto fue actualizado con exito.\n");
-    }
-
-    public void actualizarPrecio(Producto productoActualizar, double precioActualizar) {
-        productoActualizar.setPrecio(precioActualizar);
-        System.out.println("El precio del producto fue actualizado con exito.\n");
-    }
-
-    public void actualizarCategoria(Producto productoActualizar, String categoriaActualizar) {
-        productoActualizar.setCategoria(categoriaActualizar);
-        System.out.println("La categoria del producto fue actualizada con exito.\n");
-    }
-
-    public void actualizarFechaVencimiento(Producto productoActualizar, LocalDate fechaActualizar) {
-        productoActualizar.setFechaVencimiento(fechaActualizar);
-        System.out.println("La fecha de vencimiento del producto fue actualizada con exito.\n");
-    }
-
-    public void actualizarCantidad(Producto productoActualizar, int cantidadActualizar) {
-        productoActualizar.setCantidad(cantidadActualizar);
-        System.out.println("La cantidad del producto fue actualizada con exito.\n");
-    }
-
-    public void agregarImagen(Producto productoActualizar, String rutaImagenNueva) {
-        productoActualizar.getListaImagenes().add(rutaImagenNueva);
-        System.out.println("La imagen del producto fue agregada con exito.\n");
-    }
-
-    public double calcularCostoTotalInventario() {
+    public double calcularTotalCarrito() {
 
         double sumaTotal = 0;
-
-        Producto temp = first;
+        NodoLista temp = first;
 
         while (temp != null) {
-            sumaTotal += temp.getCostoTotal();
+            sumaTotal += temp.getProducto().getPrecio() * temp.getCantidadComprar();
             temp = temp.getSiguiente();
         }
 
         return sumaTotal;
+    }
+
+    public void vaciarCarrito() {
+        this.first = null;
+    }
+
+    //toString
+    @Override
+    public String toString() {
+        if (first == null) {
+            return "\n--- Carrito vacío ---";
+        }
+
+        String resultado = "\n--- Carrito ---";
+
+        NodoLista temp = first;
+
+        while (temp != null) {
+            resultado += temp.toString() + "\n";
+            temp = temp.getSiguiente();
+        }
+
+        resultado += "Total: ₡" + calcularTotalCarrito() + "\n";
+        resultado += "---------------------------------";
+
+        return resultado;
     }
 }
