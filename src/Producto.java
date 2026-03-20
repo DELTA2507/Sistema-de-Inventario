@@ -3,33 +3,27 @@ import java.util.ArrayList;
 
 public class Producto {
 
-    // --- Atributos ---
+    //Atributos
     private final int id;
     private String nombre;
     private double costoUnitario;
     private double precio;
     private String categoria;
     private LocalDate fechaVencimiento;
-    private int cantidad;
     private ArrayList<String> listaImagenes;
-    private Producto siguiente;
 
-    // --- Métodos ---
-
-    // Constructor: Crear un objeto con valores iniciales
-    public Producto(String nombre, double costoUnitario, double precio, String categoria, LocalDate fechaVencimiento, int cantidad, ArrayList<String> listaImagenes) {
-        this.id = generadorID.generar();
+    //Constructor
+    public Producto(String nombre, double costoUnitario, double precio, String categoria, LocalDate fechaVencimiento, ArrayList<String> listaImagenes) {
+        this.id = GeneradorID.generar();
         this.nombre = nombre;
         this.costoUnitario = costoUnitario;
         this.precio = precio;
         this.categoria = categoria;
         this.fechaVencimiento = fechaVencimiento;
-        this.cantidad = cantidad;
         this.listaImagenes = listaImagenes;
-        this.siguiente = null; // null por defecto, debido a que al ser creado, aun no tiene objeto siguiente
     }
 
-    // Getters: Consultar valor de un atributo
+    //Getter & setter
     public int getId() {
         return id;
     }
@@ -54,23 +48,10 @@ public class Producto {
         return fechaVencimiento;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public double getCostoTotal() {
-        return costoUnitario * cantidad;
-    }
-
     public ArrayList<String> getListaImagenes() {
         return listaImagenes;
     }
 
-    public Producto getSiguiente() {
-        return siguiente;
-    }
-
-    // Setters: Asignar/Modificar valor para un atributo
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -91,32 +72,21 @@ public class Producto {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
     public void setListaImagenes(ArrayList<String> listaImagenes) {
         this.listaImagenes = listaImagenes;
     }
 
-    public void setSiguiente(Producto siguiente) {
-        this.siguiente = siguiente;
-    }
-
-    // toString(): Rutina para imprimir la info de un objeto de forma cómoda y automática
+    //toString
     @Override
     public String toString() {
-
-        double costoTotal = costoUnitario * cantidad;
-
-        return "\nId=" + id +
-                "\nNombre='" + nombre + '\'' +
-                "\nCosto unitario=" + costoUnitario +
-                "\nCantidad=" + cantidad +
-                "\nCosto total=" + costoTotal +
-                "\nPrecio=" + precio +
-                "\nCategoria='" + categoria + '\'' +
-                "\nFecha de vencimiento=" + fechaVencimiento +
-                "\nLista de imagenes=" + listaImagenes +"\n";
+        return "\n" +
+                "ID: " + id + "\n" +
+                "Nombre: " + nombre + "\n" +
+                "Costo Unitario: ₡" + costoUnitario + "\n" +
+                "Precio: ₡" + precio + "\n" +
+                "Categoría: " + categoria + "\n" +
+                "Vencimiento: " + fechaVencimiento + "\n" +
+                "Imágenes: " + listaImagenes + "\n" +
+                "---------------------------------";
     }
 }
