@@ -12,7 +12,7 @@ public class Main {
     static Tienda tienda = new Tienda();
     static ArrayList<Cliente> clientes = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
+    static void main(String[] args) throws IOException {
 
         int opcionInicial;
         cargarProductosPrueba();
@@ -85,7 +85,7 @@ public class Main {
         }
     }
 
-    //Menú de grstión de productos
+    //Menú de gestión de productos
 
     public static void mostrarMenuProductos() {
         out.println("\n --- Funcionalidades de gestion de productos --- ");
@@ -214,7 +214,7 @@ public class Main {
 
     //Funcionalidades de aplicación
 
-    //Funcionalidades relacionadas a la gestión de productos
+    //Funcionalidades relacionadas con la gestión de productos
 
     public static void ingresarProducto(ArbolProductos arbolProductos) throws IOException {
 
@@ -261,7 +261,7 @@ public class Main {
 
             if (productoEncontrado != null) {
                 out.println("\nInformación del producto:");
-                out.println(productoEncontrado.toString());
+                out.println(productoEncontrado);
             }
 
         } catch (Exception e) {
@@ -280,10 +280,10 @@ public class Main {
 
             if (productoEncontrado != null) {
                 out.println("Información del producto:");
-                out.println(productoEncontrado.toString());
+                out.println(productoEncontrado);
 
                 int opcionModificar = -1;
-                out.println("Ingrese la opcion de modificacion que desea:");
+                out.println("Ingrese la opción de modificación que desea:");
                 out.println("1. Modificar nombre.");
                 out.println("2. Modificar costo unitario.");
                 out.println("3. Modificar precio.");
@@ -360,7 +360,7 @@ public class Main {
             NodoArbol productoEncontrado = arbolProductos.buscar(idProductoEliminar);
             if (productoEncontrado != null) {
                 out.println("\nInformación del producto:");
-                out.println(productoEncontrado.toString());
+                out.println(productoEncontrado);
 
                 int opcionEliminar = -1;
 
@@ -372,7 +372,13 @@ public class Main {
 
                 switch (opcionEliminar) {
                     case 1:
+                        if (productoEnCarrito(idProductoEliminar)) {
+                            out.println("No se puede eliminar el producto, está en el carrito de un cliente.");
+                            return;
+                        }
+
                         arbolProductos.eliminar(productoEncontrado);
+                        out.println("El producto fue eliminado con éxito");
                         break;
                     case 2:
                         out.println("El producto no fue eliminado.");
@@ -436,7 +442,7 @@ public class Main {
                     "Leche Entera",
                     800,
                     1000,
-                    "Lacteos",
+                    "Lácteos",
                     LocalDate.of(2025, 12, 1),
                     img2
             );
@@ -445,7 +451,7 @@ public class Main {
             ArrayList<String> img3 = new ArrayList<>();
             img3.add("azucar.jpg");
             Producto p3 = new Producto(
-                    "Azucar 2kg",
+                    "Azúcar 2kg",
                     950,
                     1200,
                     "Granos",
@@ -503,16 +509,16 @@ public class Main {
             out.println("Ingrese el segundo apellido del cliente:");
             String segundoApellido = in.readLine();
 
-            out.println("Ingrese el telefono del cliente:");
+            out.println("Ingrese el teléfono del cliente:");
             String telefono = in.readLine();
 
             out.println("Ingrese el email del cliente:");
             String email = in.readLine();
 
-            out.println("Ingrese la direccion del cliente:");
+            out.println("Ingrese la dirección del cliente:");
             String direccion = in.readLine();
 
-            out.println("Ingrese la prioridad del cliente (1-Basicos, 2-Afiliados, 3-Premium):");
+            out.println("Ingrese la prioridad del cliente (1-Básicos, 2-Afiliados, 3-Premium):");
             int prioridad = Integer.parseInt(in.readLine());
 
             Cliente cliente = new Cliente(cedula, nombre, primerApellido, segundoApellido, telefono, email, direccion, prioridad);
@@ -883,7 +889,7 @@ public class Main {
 
             clientes.add(c4);
 
-            //Cliente 5 carrito vacio
+            //Cliente 5 carrito vacío
             Cliente c5 = new Cliente("105", "Luis", "Fernandez", "Vargas", "88885555", "luis@email.com", "Puntarenas", 1);
 
             clientes.add(c5);
@@ -893,5 +899,14 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Error al cargar clientes de prueba: " + e.getMessage());
         }
+    }
+
+    public static boolean productoEnCarrito(int idProducto) {
+        for (Cliente c : clientes) {
+            if (c.getCarrito().buscarNodoSilencioso(idProducto) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 }

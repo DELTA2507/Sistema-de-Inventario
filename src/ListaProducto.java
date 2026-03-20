@@ -60,6 +60,19 @@ public class ListaProducto {
         return temp;
     }
 
+    public NodoLista buscarNodoSilencioso(int idProducto) {
+        NodoLista temp = first;
+
+        while (temp != null) {
+            if (temp.getProducto().getId() == idProducto) {
+                return temp;
+            }
+            temp = temp.getSiguiente();
+        }
+
+        return null;
+    }
+
     public NodoLista eliminarProducto(int idEliminar) {
         if (isNull()) {
             System.out.println("El carrito está vacío.");
