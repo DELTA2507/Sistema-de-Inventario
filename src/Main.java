@@ -846,11 +846,15 @@ public class Main {
             //Cliente 1 confirmado
             Cliente c1 = new Cliente("101", "Juan", "Perez", "Lopez", "88881111", "juan@email.com", "San Jose", 1);
 
+            // Obtener producto 1 desde inventario de tienda
             NodoArbol p1 = tienda.getInventario().buscar(1);
+
+            // Si existe entonces insertarlo en carrito de cliente
             if (p1 != null) {
                 c1.getCarrito().insertarNodoFinalCarrito(p1.getProducto(), 2,false);
             }
 
+            // Añadir cliente y poner en cola
             clientes.add(c1);
             tienda.encolarCliente(c1);
 
