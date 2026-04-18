@@ -4,15 +4,19 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     static PrintStream out = System.out;
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    static Tienda tienda = new Tienda();
+    static Tienda tienda;
+    static Grafo grafo = MapaCantones.crearGrafo();
     static ArrayList<Cliente> clientes = new ArrayList<>();
 
-    static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
+
+        inicializarTienda();
 
         int opcionInicial;
         cargarProductosPrueba();
@@ -30,6 +34,23 @@ public class Main {
         } while (opcionInicial != 0);
     }
 
+    //Inicializar tienda
+
+    public static void inicializarTienda() throws IOException {
+        String ubicacionTienda;
+
+        do {
+            out.println("Ingrese el cantón central de provincia donde se ubicará la tienda:");
+            ubicacionTienda = in.readLine();
+
+            if (!grafo.existeVertice(ubicacionTienda)) {
+                out.println("Cantón inválido. Intente nuevamente.");
+            }
+
+        } while (!grafo.existeVertice(ubicacionTienda));
+
+        tienda = new Tienda(ubicacionTienda);
+    }
 
     //Funcionalidades de menú
 
@@ -493,6 +514,59 @@ public class Main {
 
     //Funcionalidades para gestionar clientes
 
+    public static void registrarNuevoCanton(String nuevoCanton) throws IOException {
+
+        out.println("El cantón no existe en los registros. Por favor regístrelo.");
+
+        String cantonCentral;
+        do {
+            out.println("Ingrese el cantón central de provincia al que pertenece:");
+            cantonCentral = in.readLine();
+
+            if (!grafo.existeVertice(cantonCentral)) {
+                out.println("El cantón central ingresado no existe. Intente nuevamente.");
+            }
+        } while (!grafo.existeVertice(cantonCentral));
+
+        int distanciaCentral;
+        do {
+            out.println("Ingrese la distancia entre " + nuevoCanton + " y " + cantonCentral + ":");
+            distanciaCentral = Integer.parseInt(in.readLine());
+
+            if (distanciaCentral <= 0) {
+                out.println("La distancia debe ser mayor a 0.");
+            }
+        } while (distanciaCentral <= 0);
+
+        String cantonVecino;
+        do {
+            out.println("Ingrese el cantón vecino más cercano:");
+            cantonVecino = in.readLine();
+
+            if (!grafo.existeVertice(cantonVecino)) {
+                out.println("El cantón vecino ingresado no existe. Intente nuevamente.");
+            } else if (cantonVecino.equalsIgnoreCase(nuevoCanton)) {
+                out.println("El cantón vecino no puede ser el mismo cantón nuevo.");
+                cantonVecino = "";
+            }
+        } while (!grafo.existeVertice(cantonVecino));
+
+        int distanciaVecino;
+        do {
+            out.println("Ingrese la distancia entre " + nuevoCanton + " y " + cantonVecino + ":");
+            distanciaVecino = Integer.parseInt(in.readLine());
+
+            if (distanciaVecino <= 0) {
+                out.println("La distancia debe ser mayor a 0.");
+            }
+        } while (distanciaVecino <= 0);
+
+        grafo.agregarArista(nuevoCanton, cantonCentral, distanciaCentral);
+        grafo.agregarArista(nuevoCanton, cantonVecino, distanciaVecino);
+
+        out.println("Cantón registrado correctamente en el grafo.");
+    }
+
     public static void ingresarCliente() throws IOException {
 
         try {
@@ -515,13 +589,17 @@ public class Main {
             out.println("Ingrese el email del cliente:");
             String email = in.readLine();
 
-            out.println("Ingrese la dirección del cliente:");
-            String direccion = in.readLine();
+            out.println("Ingrese el cantón donde se ubica el cliente:");
+            String ubicacion = in.readLine();
+
+            if (!grafo.existeVertice(ubicacion)) {
+                registrarNuevoCanton(ubicacion);
+            }
 
             out.println("Ingrese la prioridad del cliente (1-Básicos, 2-Afiliados, 3-Premium):");
             int prioridad = Integer.parseInt(in.readLine());
 
-            Cliente cliente = new Cliente(cedula, nombre, primerApellido, segundoApellido, telefono, email, direccion, prioridad);
+            Cliente cliente = new Cliente(cedula, nombre, primerApellido, segundoApellido, telefono, email, ubicacion, prioridad);
             clientes.add(cliente);
             out.println("Cliente ingresado correctamente.");
 
@@ -782,6 +860,23 @@ public class Main {
             double total = cliente.getCarrito().calcularTotalCarrito();
             out.println("\nTotal a pagar: " + total);
 
+            String origen = tienda.getUbicacion();
+            String destino = cliente.getUbicacion();
+
+            List<String> camino = grafo.obtenerCaminoMasCorto(origen, destino);
+            int distancia = grafo.obtenerDistanciaMasCorta(origen, destino);
+
+            out.println("\n--- Ruta más corta ---");
+            out.println("Ubicación tienda: " + origen);
+            out.println("Ubicación cliente: " + destino);
+
+            if (camino.isEmpty() || distancia == Integer.MAX_VALUE) {
+                out.println("No se encontró una ruta disponible.");
+            } else {
+                out.println("Camino más corto: " + String.join(" -> ", camino));
+                out.println("Distancia total: " + distancia + " km");
+            }
+
             int opcion;
 
             do {
@@ -844,7 +939,7 @@ public class Main {
         try {
 
             //Cliente 1 confirmado
-            Cliente c1 = new Cliente("101", "Juan", "Perez", "Lopez", "88881111", "juan@email.com", "San Jose", 1);
+            Cliente c1 = new Cliente("101", "Juan", "Perez", "Lopez", "88881111", "juan@email.com", "San José", 1);
 
             // Obtener producto 1 desde inventario de tienda
             NodoArbol p1 = tienda.getInventario().buscar(1);
@@ -860,7 +955,7 @@ public class Main {
 
 
             //Cliente 2 confirmado
-            Cliente c2 = new Cliente("102", "Maria", "Gomez", "Rojas", "88882222", "maria@email.com", "Heredia", 2);
+            Cliente c2 = new Cliente("102", "Maria", "Gomez", "Rojas", "88882222", "maria@email.com", "Barva", 2);
 
             NodoArbol p2 = tienda.getInventario().buscar(2);
             if (p2 != null) {
@@ -872,7 +967,7 @@ public class Main {
 
 
             //Cliente 3 confirmado
-            Cliente c3 = new Cliente("103", "Carlos", "Ramirez", "Soto", "88883333", "carlos@email.com", "Alajuela", 3);
+            Cliente c3 = new Cliente("103", "Carlos", "Ramirez", "Soto", "88883333", "carlos@email.com", "Grecia", 3);
 
             NodoArbol p3 = tienda.getInventario().buscar(3);
             if (p3 != null) {
@@ -884,7 +979,7 @@ public class Main {
 
 
             //Cliente 4 por confirmar
-            Cliente c4 = new Cliente("104", "Ana", "Torres", "Mora", "88884444", "ana@email.com", "Cartago", 2);
+            Cliente c4 = new Cliente("104", "Ana", "Torres", "Mora", "88884444", "ana@email.com", "Paraíso", 2);
 
             NodoArbol p4 = tienda.getInventario().buscar(4);
             if (p4 != null) {
@@ -894,7 +989,7 @@ public class Main {
             clientes.add(c4);
 
             //Cliente 5 carrito vacío
-            Cliente c5 = new Cliente("105", "Luis", "Fernandez", "Vargas", "88885555", "luis@email.com", "Puntarenas", 1);
+            Cliente c5 = new Cliente("105", "Luis", "Fernandez", "Vargas", "88885555", "luis@email.com", "Esparza", 1);
 
             clientes.add(c5);
 
