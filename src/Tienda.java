@@ -1,11 +1,13 @@
 public class Tienda {
 
     //Atributos
+    private String ubicacion;
     private ArbolProductos inventario;
     private ColaClientes colaClientes;
 
     //Constructor
-    public Tienda() {
+    public Tienda(String ubicacion) {
+        this.ubicacion = ubicacion;
         this.inventario = new ArbolProductos();
         this.colaClientes = new ColaClientes();
     }
@@ -25,6 +27,14 @@ public class Tienda {
 
     public void setColaClientes(ColaClientes colaClientes) {
         this.colaClientes = colaClientes;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     //Operaciones

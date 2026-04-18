@@ -7,19 +7,19 @@ public class Cliente {
     private String segundoApellido;
     private String telefono;
     private String email;
-    private String direccion;
+    private String ubicacion;
     private int prioridad;
     ListaProducto carrito;
 
     //Constructor
-    public Cliente(String cedula, String nombre, String primerApellido, String segundoApellido, String telefono, String email, String direccion, int prioridad) {
+    public Cliente(String cedula, String nombre, String primerApellido, String segundoApellido, String telefono, String email, String ubicacion, int prioridad) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.telefono = telefono;
         this.email = email;
-        this.direccion = direccion;
+        this.ubicacion = ubicacion;
         this.prioridad = prioridad;
         this.carrito = new ListaProducto();
     }
@@ -73,12 +73,12 @@ public class Cliente {
         this.email = email;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getUbicacion() {
+        return ubicacion;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public int getPrioridad() {
@@ -105,7 +105,7 @@ public class Cliente {
                 "Cédula: " + cedula + "\n" +
                 "Teléfono: " + telefono + "\n" +
                 "Email: " + email + "\n" +
-                "Dirección: " + direccion + "\n" +
+                "Ubicación: " + ubicacion + "\n" +
                 "Prioridad: " + prioridad;
     }
 
